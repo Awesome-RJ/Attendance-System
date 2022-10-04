@@ -1,0 +1,9 @@
+numpy
+pytz
+cmake
+dlib
+db-sqlite3
+opencv-python
+customtkinter
+face_recognition
+AwesomeTkinter
