@@ -1,6 +1,7 @@
 import base64
 import logging
 import re
+from contextlib import suppress
 from datetime import datetime
 from time import *
 from tkinter import *
@@ -75,10 +76,8 @@ position_match = StringVar()
 
 def handlererr(func) -> None:
     def wrapper(*args, **kwargs):
-        try:
+        with suppress(BaseException):
             return func(*args, **kwargs)
-        except BaseException:
-            pass
 
     return wrapper
 
