@@ -4,11 +4,10 @@ from tkinter import messagebox
 from functions import *
 from homepage import HomePage
 
-
 def on_login_click():
     username = user.get()
     pwd = password.get()
-    if username.lower() == "admin" and pwd.lower() == "admin":
+    if username.lower() == UNAME and pwd.lower() == UPASS:
         messagebox.showinfo("Success", "You have successfully logged in")
         page.userEntry.delete(0, END)
         page.pwdEntry.delete(0, END)

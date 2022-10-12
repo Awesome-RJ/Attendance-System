@@ -1,4 +1,4 @@
-# ATTENDANCE SYSTEM
+# ATTENDANCE SYSTEM.
 
 This is a small project made in python3 to record attendance of students in an small office using their faces.
 
@@ -28,4 +28,4 @@ This is just my small project which helps small scale companies or schools  to r
   
 ### Software requirement:
      Visual Studio with c ++ installed
-     dlib3 installed 
+     dlib installed 

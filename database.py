@@ -12,7 +12,7 @@ class databases:
         )
         logger.info("Database EMPLOYEE_INFO initialized")
         self.db.execute(
-            f"CREATE TABLE IF NOT EXISTS {self.dbname}(Employeeid INTEGER PRIMARY KEY UNIQUE, EmployeeName TEXT, Date TEXT, Entry TEXT, Leave TEXT, Time INTEGER);"
+            f"CREATE TABLE IF NOT EXISTS {self.dbname}(Employeeid INTEGER,EmployeeName TEXT,Date TEXT,Entry TEXT,Leave TEXT,Time INTEGER,PRIMARY KEY (Employeeid) ,FOREIGN KEY (Employeeid) REFERENCES EMPLOYEE_INFO(Employeeid));"
         )
         logger.info("Database %s initialized", self.dbname)
         self.db.commit()
@@ -21,7 +21,7 @@ class databases:
         query = "SELECT * FROM EMPLOYEE_INFO WHERE EmployeeId = ?;"
         msg = self.db.execute(query, [employeeID])
         self.db.commit()
-        return len([x for x in msg]) != 0
+        return len(list(msg)) != 0
 
     def newEmployee(
         self, employee_id: int, name: str, position: str, profile: str
@@ -35,15 +35,21 @@ class databases:
         except BaseException:
             return "ERROR"
 
+    def update_employee_info(self, eid, name, position, profile) -> None:
+        query = "UPDATE EMPLOYEE_INFO SET EmployeeId = ?, EmployeeName = ?, EmployeePosition = ?, EmployeeProfile = ? WHERE EmployeeId = ?;"
+        self.db.execute(query, [eid, name, position, profile, eid])
+        self.db.commit()
+        return
+
     def employeecount(self) -> int:
         query = "SELECT * FROM EMPLOYEE_INFO;"
         msg = self.db.execute(query)
-        return len([x for x in msg])
+        return len(list(msg))
 
     def get_today_employee_count(self) -> int:
         values = self.db.execute(f"SELECT * FROM {self.dbname};")
         self.db.commit()
-        return len([value for value in values])
+        return len(list(values))
 
     def getemployee(self, employee_id: int) -> list:
         if not self.check_employee(employee_id):
@@ -51,7 +57,7 @@ class databases:
         query = "SELECT * FROM EMPLOYEE_INFO WHERE EmployeeId = ?;"
         msg = self.db.execute(query, [employee_id])
         self.db.commit()
-        return [x for x in msg]
+        return list(msg)[0]
 
     def delete_employee(self, employee_id: int):
         if not self.check_employee(employee_id):
@@ -65,14 +71,14 @@ class databases:
         query = "SELECT * FROM EMPLOYEE_ENTRY ORDER BY EmployeeId;"
         sorted = self.db.execute(query)
         self.db.commit()
-        return [x for x in sorted]
+        return list(sorted)
 
     def get_entry_time(self, eid: int, date: str):
         query = f"SELECT * FROM {self.dbname} WHERE EmployeeId = ? AND Date = ?;"
         try:
             values = self.db.execute(query, [eid, date])
             self.db.commit()
-            datas = [x for x in values]
+            datas = list(values)
             return datas[0][5]
         except Exception:
             return 0
@@ -82,7 +88,7 @@ class databases:
         try:
             values = self.db.execute(query, [eid, date])
             self.db.commit()
-            datas = [x for x in values]
+            datas = list(values)
             return datas[0][3]
         except Exception:
             return None
@@ -111,37 +117,51 @@ class databases:
             "SELECT * FROM EMPLOYEE_INFO WHERE EmployeeId = ?;", [eid]
         )
         self.db.commit()
-        return [value for value in values]
+        return list(values)
 
     def get_employee_by_position(self, position) -> list:
         query = "SELECT * FROM EMPLOYEE_INFO WHERE EmployeePosition = ?;"
         self.db.execute(query, [position])
         self.db.commit()
-        return [x for x in query]
+        return list(query)
 
     def get_all_employee_info(self) -> list:
         query = " SELECT * FROM EMPLOYEE_INFO;"
         msg = self.db.execute(query)
         self.db.commit()
-        return [q for q in msg]
+        return list(msg)
 
     def get_entry_by_date(self, date) -> list:
         values = self.db.execute(f"SELECT * FROM {date};")
         self.db.commit()
-        return [value for value in values]
+        return list(values)
 
     def get_entry_by_id(self, eid) -> list:
         values = self.db.execute(
             f"SELECT * FROM {self.dbname} WHERE EmployeeId = ?;", [eid]
         )
         self.db.commit()
-        return [value for value in values]
+        return list(values)
 
     def validate_date(self, date) -> bool:
-        values = self.db.execute(
-            "SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?;", [date]
+        cur = self.db.execute(
+            "SELECT name FROM sqlite_schema WHERE type = 'table';"
         )
-        return [value for value in values] != 0
+        tot = [x[0] for x in cur if x[0] != "EMPLOYEE_INFO"]
+        return date in tot
+
+    def search_data_by_id(self, eid: int) -> list:
+        cur = self.db.execute(
+            "SELECT name FROM sqlite_schema WHERE type = 'table';"
+        )
+        tot = [x[0] for x in cur if x[0] != "EMPLOYEE_INFO"]
+        query = "SELECT * FROM {} where EmployeeId=?;"
+        l = []
+        for x in tot:
+            m = self.db.execute(query.format(x), [eid])
+            for x in m:
+                l.append(x)
+        return l
 
 
 db = databases()
