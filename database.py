@@ -144,16 +144,12 @@ class databases:
         return list(values)
 
     def validate_date(self, date) -> bool:
-        cur = self.db.execute(
-            "SELECT name FROM sqlite_schema WHERE type = 'table';"
-        )
+        cur = self.db.execute("SELECT name FROM sqlite_schema WHERE type = 'table';")
         tot = [x[0] for x in cur if x[0] != "EMPLOYEE_INFO"]
         return date in tot
 
     def search_data_by_id(self, eid: int) -> list:
-        cur = self.db.execute(
-            "SELECT name FROM sqlite_schema WHERE type = 'table';"
-        )
+        cur = self.db.execute("SELECT name FROM sqlite_schema WHERE type = 'table';")
         tot = [x[0] for x in cur if x[0] != "EMPLOYEE_INFO"]
         query = "SELECT * FROM {} where EmployeeId=?;"
         l = []

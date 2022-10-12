@@ -12,7 +12,6 @@ from database import db
 from functions import *
 
 
-
 class HomePage:
     @handlererr
     def __init__(self, up):
