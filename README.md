@@ -1,4 +1,4 @@
-# ATTENDANCE SYSTEM.
+# ATTENDANCE SYSTEM
 
 This is a small project made in python3 to record attendance of students in an small office using their faces.
 

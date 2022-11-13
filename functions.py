@@ -1,6 +1,5 @@
 import base64
 import logging
-import os
 import re
 from datetime import datetime
 from time import *
@@ -9,18 +8,13 @@ from tkinter import messagebox
 
 import cv2
 import pytz
-from dotenv import load_dotenv
 from PIL import Image as IM
 from PIL import ImageTk
 
-load_dotenv()
 root = Tk()
 root.title("Face Recognition")
 root.state("zoomed")
 ysize = root.winfo_screenheight()
-postionslist = ["admin", "manager", "employee"]
-UNAME = os.getenv("UNAME")
-UPASS = os.getenv("UPASS")
 xsize = root.winfo_screenwidth()
 face_cascade = cv2.CascadeClassifier("model.xml")
 
@@ -35,6 +29,7 @@ logger = logging.getLogger("EMPLOYEE ATTENDANCE")
 # bg
 loginbg = ImageTk.PhotoImage(IM.open("resources/login/bg.jpg"))
 homebg = ImageTk.PhotoImage(IM.open("resources/home/home.jpg"))
+mngbg = ImageTk.PhotoImage(IM.open("resources/manage/manage.jpg"))
 newentry = ImageTk.PhotoImage(IM.open("resources/add/entry.jpg"))
 searchbg = ImageTk.PhotoImage(IM.open("resources/search/search.jpg"))
 opendbimg = ImageTk.PhotoImage(IM.open("resources/opendb/opendb.jpg"))
@@ -44,19 +39,24 @@ cambg = ImageTk.PhotoImage(IM.open("resources/camera/cambg.jpg"))
 
 loginbox = ImageTk.PhotoImage(IM.open("resources/login/login.jpg"))
 managepanel = ImageTk.PhotoImage(IM.open("resources/home/box2.png"))
+managepanel2 = ImageTk.PhotoImage(IM.open("resources/manage/box3.png"))
 timepanel = ImageTk.PhotoImage(IM.open("resources/home/time.png"))
+timepanel2 = ImageTk.PhotoImage(IM.open("resources/camera/time.png"))
+addpanel = ImageTk.PhotoImage(IM.open("resources/add/addbox.png"))
 
 
 # label
-logopanel = ImageTk.PhotoImage(IM.open("resources/home/logo.png"))
+logopanel = ImageTk.PhotoImage(IM.open("resources/home/logo.jpg"))
+logopanel1 = ImageTk.PhotoImage(IM.open("resources/home/logo.png"))
+lolg = ImageTk.PhotoImage(IM.open("resources/login/lglo.png"))
 countpanel = ImageTk.PhotoImage(IM.open("resources/home/box.png"))
 addlg = ImageTk.PhotoImage(IM.open("resources/add/addlg.png"))
 updtlg = ImageTk.PhotoImage(IM.open("resources/add/updtlg.png"))
 passlb = ImageTk.PhotoImage(IM.open("resources/manage/pass.png"))
 mnglogo = ImageTk.PhotoImage(IM.open("resources/manage/mnglogo.png"))
+viewpnl = ImageTk.PhotoImage(IM.open("resources/camera/view.png"))
 
 # button
-submit = ImageTk.PhotoImage(IM.open("resources/login/submit.png"))
 login = ImageTk.PhotoImage(IM.open("resources/login/login.png"))
 add = ImageTk.PhotoImage(IM.open("resources/add/add.png"))
 updt = ImageTk.PhotoImage(IM.open("resources/add/update.png"))
@@ -64,6 +64,7 @@ chngimg = ImageTk.PhotoImage(IM.open("resources/add/change.png"))
 search = ImageTk.PhotoImage(IM.open("resources/home/search.png"))
 refresh = ImageTk.PhotoImage(IM.open("resources/home/refresh.png"))
 backbtn = ImageTk.PhotoImage(IM.open("resources/manage/back.png"))
+backbtn2 = ImageTk.PhotoImage(IM.open("resources/camera/back.png"))
 
 # logo
 
@@ -81,11 +82,38 @@ unknownimg = ImageTk.PhotoImage(IM.open("resources/opendb/unknown.jpg"))
 
 user = StringVar()
 password = StringVar()
-ename = StringVar()
-eposition = StringVar()
+
 eid = StringVar()
+ename = StringVar()
+d_o_b = StringVar()
+gndr = StringVar()
+e_mail = StringVar()
+ph_no = StringVar()
+eposition = StringVar()
+adrs = StringVar()
+
+updateempid = StringVar()
+updateename = StringVar()
+updated_o_b = StringVar()
+updategndr = StringVar()
+updatee_mail = StringVar()
+updateph_no = StringVar()
+updateempostion = StringVar()
+updateadrs = StringVar()
+
 date_ = StringVar()
+chk_ = IntVar()
+chks_ = IntVar()
+start_dt = StringVar()
+end_dt = StringVar()
 Id_ = StringVar()
+adv_ = IntVar()
+
+startdt = StringVar()
+enddt = StringVar()
+dtchk_ = IntVar()
+adv1_ = IntVar()
+
 tdy_ = StringVar()
 opendbvar = StringVar()
 position_match = StringVar()
